@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>One Day With You</title>
+<meta name="description" content="A cozy interactive storybook about spending one peaceful day together." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="game">
+
+    <!-- Background layer -->
+    <div id="bg-layer"></div>
+    <div id="bg-dim"></div>
+
+    <!-- Top bar -->
+    <div id="top-bar">
+      <div id="top-bar-left">
+        <span id="day-label">☀ Monday</span>
+        <span id="clock-label">🕘 09:00 AM</span>
+      </div>
+      <div id="progress-wrap">
+        <span id="progress-label">Morning</span>
+        <div id="progress-bar"><div id="progress-fill"></div></div>
+      </div>
+      <div id="top-bar-right">
+        <button id="settings-btn" title="Menu" aria-label="Open menu">⚙️</button>
+      </div>
+    </div>
+
+    <!-- Memory popup -->
+    <div id="memory-popup" class="hidden">
+      <div class="memory-rule"></div>
+      <div class="memory-title">✨ New Memory</div>
+      <div class="memory-name"></div>
+      <div class="memory-rule"></div>
+    </div>
+
+    <!-- Characters -->
+    <div id="characters">
+      <div class="character" id="char-left">
+        <img class="char-sprite" src="assets/characters/boy_full.png" alt="Cupcake" />
+        <div class="char-name">Cupcake</div>
+      </div>
+      <div class="character" id="char-right">
+        <img class="char-sprite" src="assets/characters/girl_full.png" alt="Kido" />
+        <div class="char-name">Kido</div>
+      </div>
+    </div>
+
+    <!-- Title card (intro only) -->
+    <div id="title-card" class="hidden">
+      <h1>ONE DAY<br/>WITH YOU</h1>
+    </div>
+
+    <!-- Dialogue box -->
+    <div id="dialogue-box" class="hidden">
+      <div id="speaker-name"></div>
+      <div id="dialogue-text"></div>
+      <button id="continue-btn">▶ Continue</button>
+    </div>
+
+    <!-- Choices -->
+    <div id="choice-wrap" class="hidden"></div>
+
+    <!-- Fade overlay -->
+    <div id="fade-overlay"></div>
+
+    <!-- Settings menu -->
+    <div id="menu-overlay" class="hidden">
+      <div id="menu-box">
+        <h2>Menu</h2>
+        <button class="menu-item" id="menu-resume">Resume</button>
+        <button class="menu-item" id="menu-music-toggle">🎵 Music: On</button>
+        <div class="menu-item menu-slider-row">
+          <label for="menu-volume">Volume</label>
+          <input type="range" id="menu-volume" min="0" max="1" step="0.05" value="0.5" />
+        </div>
+        <button class="menu-item" id="menu-restart">Restart Day</button>
+        <button class="menu-item" id="menu-scrapbook" disabled>Scrapbook (available at day's end)</button>
+      </div>
+    </div>
+
+    <!-- Scrapbook -->
+    <div id="scrapbook-screen" class="hidden">
+      <div id="scrapbook-inner">
+        <h1>💌 Your Scrapbook</h1>
+        <p id="scrapbook-sub">One day, together. Here's what you made of it.</p>
+        <div id="scrapbook-grid"></div>
+        <p id="scrapbook-final">Some days aren't remembered because they were perfect.<br/>They're remembered because they were shared.<br/><br/>Thank you for spending one day with them. ❤️</p>
+        <button id="restart-btn">🔁 Play Another Day</button>
+      </div>
+    </div>
+
+  </div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
