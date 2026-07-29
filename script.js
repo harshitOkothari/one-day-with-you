@@ -98,14 +98,19 @@ function playMusicForScene(scene) {
 function unlockAudio() {
   if (audioUnlocked) return;
   audioUnlocked = true;
-  [audioA, audioB].forEach((a) => {
-    a.play().then(() => a.pause()).catch(() => {});
-  });
-  // Resume whichever track should currently be playing, now that a real
-  // user gesture has happened (browsers block autoplay before this).
+
+  // Start the track that should actually be playing right now — do this
+  // FIRST and don't touch it again, or a delayed pause() from priming
+  // the other element can race in and silently kill it.
   if (musicEnabled && activeAudio.src) {
     activeAudio.play().catch(() => {});
     fadeAudio(activeAudio, musicVolume);
+  }
+
+  // Quietly prime the *other* (currently silent) element so future
+  // crossfades can autoplay too, without affecting the one playing now.
+  if (inactiveAudio !== activeAudio) {
+    inactiveAudio.play().then(() => inactiveAudio.pause()).catch(() => {});
   }
 }
 
@@ -134,6 +139,7 @@ let state = {
   collectedMemories: [],
   isTyping: false,
   typingTimeout: null,
+  sceneEnded: false,
 };
 
 const TYPE_SPEED = 16; // ms per character
@@ -153,6 +159,7 @@ function loadScene(sceneId, opts = {}) {
   const doLoad = () => {
     state.currentSceneId = sceneId;
     state.lineIndex = 0;
+    state.sceneEnded = false;
 
     // Background
     if (scene.background) {
@@ -233,6 +240,8 @@ function showLine() {
   const total = scene.lines.length;
 
   if (state.lineIndex >= total) {
+    if (state.sceneEnded) return; // already processed — ignore extra clicks
+    state.sceneEnded = true;
     handleSceneEnd(scene);
     return;
   }
@@ -292,6 +301,7 @@ function advance() {
 }
 
 function handleSceneEnd(scene) {
+  els.dialogueBox.classList.add("hidden");
   if (scene.memory) {
     showMemoryPopup(scene.memory, () => proceedAfterScene(scene));
   } else {
